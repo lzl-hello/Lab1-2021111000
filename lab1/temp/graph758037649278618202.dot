@@ -1,0 +1,11 @@
+digraph G {
+	"love" [label="love"];
+	"not" [label="not"];
+	"i" [label="i"];
+	"do" [label="do"];
+	"you" [label="you"];
+	"love" -> "you" [label="1"];
+	"not" -> "love" [label="1"];
+	"i" -> "do" [label="1"];
+	"do" -> "not" [label="1"];
+}
