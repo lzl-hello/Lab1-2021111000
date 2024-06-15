@@ -1,6 +1,14 @@
+/**
+ * @Date: 2024-06-13
+ * @Info: 1. 白盒测试
+ *        2. 已知wordgraph类中的方法的具体实现，测试能否得到预期输出
+ *        3. calcShortestPath方法
+ *        4. queryBridgeWords方法
+ *        5. generateNewText方法
+ *        6. randomWalk方法
+ */
 package com.lzl.lab;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,53 +26,50 @@ class WordGraphTest {
         String txt = "explore strange new worlds to seek out new life and new lzl";
         wordGraph = new WordGraph();
         wordGraph.buildGraph(txt);
-
-        // Print the adjacency list
-        Map<String, List<String>> adjacencyList = wordGraph.getAdjacencyList();
-        for (Map.Entry<String, List<String>> entry : adjacencyList.entrySet()) {
-            String word = entry.getKey();
-            List<String> adjacentWords = entry.getValue();
-            for (String adjWord : adjacentWords) {
-                System.out.println(word + " -> " + adjWord);
-            }
-        }
     }
 
     @Test
     void queryBridgeWords() {
-        System.out.println(wordGraph.queryBridgeWords("explore", "new"));
-        System.out.println(wordGraph.queryBridgeWords("to", "out"));
-        System.out.println(wordGraph.queryBridgeWords("life", "lzl"));
-        System.out.println(wordGraph.queryBridgeWords("out", "new"));
-        System.out.println(wordGraph.queryBridgeWords("enter", "tje"));
-        System.out.println(wordGraph.queryBridgeWords("enter", "new"));
-        System.out.println(wordGraph.queryBridgeWords("lzl", "tje"));
+        assertEquals("The bridge words from explore to new are: strange", wordGraph.queryBridgeWords("explore", "new"));
+        assertEquals("No bridge words from to to new!", wordGraph.queryBridgeWords("to", "new"));
+        assertEquals("Neither enter nor tje is in the graph!", wordGraph.queryBridgeWords("enter", "tje"));
+        assertEquals("No enter in the graph!", wordGraph.queryBridgeWords("enter", "new"));
+        assertEquals("No tje in the graph!", wordGraph.queryBridgeWords("lzl", "tje"));
     }
 
     @Test
     void generateNewText() {
-        System.out.println(wordGraph.generateNewText("explore new worlds to seek new life new lzl"));
-        System.out.println(wordGraph.generateNewText("explore strange new worlds to seek out new life and new lzl"));
+        assertEquals("explore strange new worlds to seek out new life and new lzl",
+                wordGraph.generateNewText("explore new worlds to seek new life new lzl"));
+        assertEquals("explore strange new worlds to seek out new life and new lzl",
+                wordGraph.generateNewText("explore strange new worlds to seek out new life and new lzl"));
     }
 
     @Test
     void calcShortestPath() {
-        System.out.println(wordGraph.calcShortestPath("explore", "lzl"));
-        System.out.println(wordGraph.calcShortestPath("explore", "new"));
-        System.out.println(wordGraph.calcShortestPath("explore", "worlds"));
-        System.out.println(wordGraph.calcShortestPath("explore", "strange"));
+        assertEquals("The shortest path(s) from explore to lzl with length 3 are:\n" +
+                "explore -> strange -> new -> lzl\n", wordGraph.calcShortestPath("explore", "lzl"));
+        assertEquals("The shortest path(s) from explore to new with length 2 are:\n" +
+                "explore -> strange -> new\n", wordGraph.calcShortestPath("explore", "new"));
+        assertEquals("The shortest path(s) from explore to worlds with length 3 are:\n" +
+                "explore -> strange -> new -> worlds\n", wordGraph.calcShortestPath("explore", "worlds"));
     }
 
-    @Test
-    void printShortestDistancesFromWord(){
-        wordGraph.printShortestDistancesFromWord("worlds");
-    }
 
     @Test
     void randomWalk() {
-        System.out.println(wordGraph.randomWalk());
-        System.out.println(wordGraph.randomWalk());
-        System.out.println(wordGraph.randomWalk());
+        String walk1 = wordGraph.randomWalk();
+        String walk2 = wordGraph.randomWalk();
+        String walk3 = wordGraph.randomWalk();
 
+        // Assuming randomWalk returns a non-empty string
+        assertNotNull(walk1);
+        assertFalse(walk1.isEmpty());
+
+        assertNotNull(walk2);
+        assertFalse(walk2.isEmpty());
+
+        assertNotNull(walk3);
+        assertFalse(walk3.isEmpty());
     }
 }
